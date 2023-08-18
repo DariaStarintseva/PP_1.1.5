@@ -35,7 +35,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try (Session session = getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
-            Query<User> query = session.createSQLQuery(create);
+            Query<User> query = session.createSQLQuery(create).addEntity(User.class);
             query.executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<User> query = session.createSQLQuery(drop);
+            Query<User> query = session.createSQLQuery(drop).addEntity(User.class);;
             query.executeUpdate();
             transaction.commit();
         } catch (Exception e) {
