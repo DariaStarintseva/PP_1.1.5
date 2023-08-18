@@ -13,14 +13,14 @@ public class Main {
         UserService us = new UserServiceImpl();
         us.createUsersTable();
 
-        us.saveUser("Ivan", "Ivanov", (byte) 27);
-        us.saveUser("Alex", "Alexeev", (byte) 14);
+       us.saveUser("Ivan", "Ivanov", (byte) 27);
+       us.saveUser("Alex", "Alexeev", (byte) 14);
         us.saveUser("Vito", "Corleone", (byte) 55);
         us.saveUser("Crocodile", "Gena", (byte) 2);
 
-        for (User user : us.getAllUsers()) {
+      for (User user : us.getAllUsers()) {
             System.out.println(user);
-        }
+       }
 
         us.cleanUsersTable();
 

@@ -12,13 +12,17 @@ import static jm.task.core.jdbc.util.Util.getSessionFactory;
 
 public class UserDaoHibernateImpl implements UserDao {
 
-    private static final String create  = "CREATE TABLE IF NOT EXISTS mytest.users " +
+
+    private static final String create  = "CREATE TABLE IF NOT EXISTS users" +
             "(id BIGINT AUTO_INCREMENT PRIMARY KEY , " +
             "name VARCHAR(50) NOT NULL, lastName VARCHAR(50) NOT NULL, " +
             "age TINYINT NOT NULL)";
-    private static final String drop = "DROP TABLE IF EXISTS mytest.users;";
+    private static final String drop = "DROP TABLE IF EXISTS users";
     private static final String clear = "DELETE FROM User";
     private static final String get = "FROM User";
+
+
+
     public UserDaoHibernateImpl() {
 
     }
@@ -26,11 +30,12 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
+
         Transaction transaction = null;
         try (Session session = getSessionFactory().openSession()) {
             transaction = session.getTransaction();
             transaction.begin();
-            Query<User> query = session.createSQLQuery(create).addEntity(User.class);
+            Query<User> query = session.createSQLQuery(create);
             query.executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -38,12 +43,13 @@ public class UserDaoHibernateImpl implements UserDao {
         }
     }
 
+
     @Override
     public void dropUsersTable() {
         Transaction transaction = null;
         try (Session session = getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<User> query = session.createSQLQuery(drop).addEntity(User.class);
+            Query<User> query = session.createSQLQuery(drop);
             query.executeUpdate();
             transaction.commit();
         } catch (Exception e) {
@@ -86,8 +92,7 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         Session session = getSessionFactory().openSession();
-        Query<User> query = session.createQuery(get);
-        List<User> userList = query.list();
+        List<User> userList = session.createQuery(get, User.class).getResultList();
         session.close();
         return userList;
     }
